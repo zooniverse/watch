@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/Granze/react-starterify.svg?branch=master)](https://travis-ci.org/Granze/react-starterify)
-[![bitHound Score](https://www.bithound.io/github/Granze/react-starterify/badges/score.svg)](https://www.bithound.io/github/Granze/react-starterify/master)
-[![Dependency status](https://david-dm.org/granze/react-starterify/status.svg)](https://david-dm.org/granze/react-starterify "Dependency status")
-[![Dev dependency status](https://david-dm.org/granze/react-starterify/dev-status.svg)](https://david-dm.org/granze/react-starterify#info=devDependencies "Dev dependency status")
+[![Build Status](https://travis-ci.org/zooniverse/watch.svg?branch=master)](https://travis-ci.org/zooniverse/watch)
+[![bitHound Score](https://www.bithound.io/github/zooniverse/watch/badges/score.svg)](https://www.bithound.io/github/zooniverse/watch/master)
+[![Dependency status](https://david-dm.org/zooniverse/watch/status.svg)](https://david-dm.org/zooniverse/watch "Dependency status")
+[![Dev dependency status](https://david-dm.org/zooniverse/watch/dev-status.svg)](https://david-dm.org/zooniverse/watch#info=devDependencies "Dev dependency status")
 
 # React Starterify
 
@@ -15,7 +15,7 @@ If you're looking for a minimal ES6 (ES2015) React JS starter with nice [shallow
 ## Why there are no Flux or Isomorphic things inside?
 
 If you are a beginner, you probably don't want a complex structure with lots of things to care about.
-If you are an advanced user, and you need more features, you can choose one of the thousand existing full-stack starter kit. Or you can build your own. 
+If you are an advanced user, and you need more features, you can choose one of the thousand existing full-stack starter kit. Or you can build your own.
 
 ## Usage
 
