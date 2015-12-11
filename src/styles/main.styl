@@ -1,0 +1,177 @@
+*, *:before, *:after
+  box-sizing border-box
+
+body
+  font-family Arial, Helvetica, sans-serif
+  color #333
+  background-color #fff
+  margin 0
+  padding 0
+
+header
+  color #fff
+  background #0066bb url(../images/reactjs.png) no-repeat right 10px
+  background-size contain
+  h1
+    display inline-block
+    padding 0 20px
+  a
+    display inline-block
+    margin 10px
+    padding 10px
+    color #fff
+    text-decoration none
+    border-radius 3px
+    &.active,
+    &:hover
+      background-color #0085F3
+
+section
+  padding 20px
+
+body {
+  background-color: #222;
+  font-family: sans-serif;
+}
+
+div#banner {
+       position: absolute;
+       top: 0;
+       left: 0;
+       background-color: #111;
+       width: 100%;
+       height: 75px;
+}
+
+div#banner-content {
+       width: 100%;
+       margin: 0 auto;
+       padding: 0px;
+       border: 0px solid #000;
+       font-size: 38pt;
+       color: #fff;
+       text-align: center;
+}
+
+div {
+  position: relative;
+}
+
+span.counts {
+  position: absolute;
+  display: block;
+  bottom: 0px;
+  width: 100%;
+  height: 24px;
+  z-index: 10;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+}
+
+span.right {
+  padding-left: 10px;
+}
+
+ul.rig {
+  list-style: none;
+  font-size: 0px;
+  margin-left: -2.5%; /* should match li left margin */
+  margin-top: 40px;
+}
+
+ul.rig li {
+  display: inline-block;
+  padding: 0px;
+  margin: 0 0 2.5% 2.5%;
+  background: #FFF;
+  border: 0px solid #ddd;
+  font-size: 0px;
+  font-size: 0rem;
+  vertical-align: top;
+  box-shadow: 0 0 20px #fff;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+ul.rig li img {
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 0px;
+}
+
+ul.rig li h3 {
+  margin: 0 0 5px;
+}
+
+ul.rig li p {
+  font-size: .9em;
+  line-height: 1.5em;
+  color: #999;
+}
+
+/* class for 6 columns */
+ul.rig.columns-6 li {
+  width: 13.60%; /* this value + 2.5 should = 20% */
+}
+
+@media (max-width: 480px) {
+  ul.grid-nav li {
+    display: block;
+    margin: 0 0 5px;
+  }
+  ul.grid-nav li a {
+    display: block;
+  }
+  ul.rig {
+    margin-left: 0;
+  }
+  ul.rig li {
+    width: 100% !important; /* over-ride all li styles */
+    margin: 0 0 20px;
+  }
+}
+
+h1 {
+    color: #fff;
+  text-align: center;
+}
+
+p {
+    color: #fff;
+  text-align: center;
+}
+
+.project-box {
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.twiddle-enter {
+  span.counts {
+    background-color: #fff;
+  }
+}
+
+.twiddle-enter.twiddle-enter-active {
+  span.counts {
+    transition: background-color 500ms ease-in;
+    background-color: #000;
+  }
+}
+
+.twiddle-leave {
+  visibility: hidden;
+  height: 0px !important;
+  width: 0px !important;
+  margin: 0px !important;
+  opacity: 1;
+}
+
+.twiddle-leave.twiddle-leave-active {
+  opacity: 0.01;
+  transition: opacity 10ms ease-in;
+}
