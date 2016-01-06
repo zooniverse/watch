@@ -15,6 +15,7 @@ export default React.createClass({
         <header>
           <h1>Zooniverse Status</h1>
           <Link to="/heimdall">Heimdall</Link>
+          <Link to="/map">Live</Link>
           <Link to="/poweredby">Powered by</Link>
         </header>
         <section>
