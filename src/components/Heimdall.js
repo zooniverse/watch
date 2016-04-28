@@ -1,6 +1,5 @@
 import React from 'react';
-import addons from 'react/addons';
-const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Pusher from 'pusher-js';
 import Panoptes from 'panoptes-client';
 
@@ -28,7 +27,6 @@ export default class Heimdall extends React.Component {
 
   loadAvatar(project) {
     project.get("avatar").then(function(avatar) {
-      console.log(avatar);
       project.avatarSrc = avatar.src;
       var projects = this.state.projects;
       projects[project.id] = project;

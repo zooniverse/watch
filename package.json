@@ -31,12 +31,14 @@
   },
   "homepage": "https://github.com/Granze/react-starterify",
   "dependencies": {
-    "leaflet-realtime": "^1.1.1",
     "browserify-shim": "^3.7.0",
+    "leaflet": "^0.7.7",
+    "leaflet-realtime": "^1.1.1",
     "panoptes-client": "^0.1.2",
     "pusher-js": "^3.0.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
+    "react-leaflet": "^0.11.2",
     "react-router": "^1.0.0-rc3"
   },
   "devDependencies": {
