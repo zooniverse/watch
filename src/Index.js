@@ -10,8 +10,8 @@ window.React = React;
 ReactDOM.render(
   <Router>
     <Route path="/" component={App}>
-      <Route path="/heimdall" component={Heimdall}/>
-      <Route path="/map" component={Map}/>
+      <Route path="/heimdall" component={Heimdall} />
+      <Route path="/map" component={Map} />
     </Route>
   </Router>
   , document.getElementById('content')

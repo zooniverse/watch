@@ -2,11 +2,21 @@ import React from 'react';
 import { Link }  from 'react-router';
 import packageJSON from '../../package.json';
 
-export default React.createClass({
-  returnSomething(something) {
-    //this is only for testing purposes. Check /test/components/App-test.js
-    return something;
-  },
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      channel: null
+    };
+  }
+
+  componentWillMount() {
+    const pusher = new Pusher('79e8e05ea522377ba6db', {encrypted: true});
+    const channel = pusher.subscribe('panoptes')
+
+    this.setState({ channel })
+  }
+
   render() {
     const version = packageJSON.version;
 
@@ -18,9 +28,9 @@ export default React.createClass({
           <Link to="/map">Live</Link>
         </header>
         <section>
-          {this.props.children || 'Welcome to React Starterify'}
+          {React.cloneElement(this.props.children, { channel: this.state.channel })|| 'Welcome to React Starterify'}
         </section>
       </div>
     )
   }
-});
+};

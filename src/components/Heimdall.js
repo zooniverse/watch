@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Pusher from 'pusher-js';
+import { apiClient } from 'panoptes-client';
 import Panoptes from 'panoptes-client';
 
 
@@ -15,12 +16,12 @@ export default class Heimdall extends React.Component {
       this.state.projects[classification.project_id].classifications_count += 1;
       this.forceUpdate();
     } else {
-      this.state.panoptes.api.type('projects').get(classification.project_id.toString()).then(function(project) {
+      apiClient.type('projects').get(classification.project_id.toString()).then(function(project) {
         project.avatarSrc = 'https://placekitten.com/175/175';
         this.loadAvatar(project)
         var projects = this.state.projects;
         projects[classification.project_id] = project;
-        this.setState({projects: projects});
+        this.setState({ projects: projects });
       }.bind(this));
     }
   }
@@ -35,16 +36,7 @@ export default class Heimdall extends React.Component {
   }
 
   componentDidMount() {
-    var pusher = new Pusher('79e8e05ea522377ba6db', {encrypted: true});
-    var channel = pusher.subscribe('panoptes')
-    channel.bind('classification', this.processPanoptesClassification.bind(this))
-
-    var panoptes = new Panoptes({appID: '1'});
-
-    window.pusher = pusher;
-    window.panoptes = panoptes;
-
-    this.setState({pusher: pusher, panoptes: panoptes});
+    this.props.channel.bind('classification', this.processPanoptesClassification.bind(this))
   }
 
   render() {
