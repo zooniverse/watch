@@ -42,6 +42,7 @@ export default class Heimdall extends React.Component {
   render() {
     return (
       <div>
+        <p>Listening to stream...</p>
         <ul id="project_list" className="rig columns-6">
           <ReactCSSTransitionGroup transitionName="twiddle" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
             {Object.keys(this.state.projects).map(this.renderProject.bind(this))}

@@ -10,11 +10,11 @@ export default class App extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const pusher = new Pusher('79e8e05ea522377ba6db', {encrypted: true});
     const channel = pusher.subscribe('panoptes')
 
-    this.setState({ channel })
+    this.setState({ channel: channel })
   }
 
   render() {
@@ -23,12 +23,12 @@ export default class App extends React.Component {
     return (
       <div>
         <header>
-          <h1>Zooniverse Status</h1>
+          <Link to="/"><h1>Zooniverse Status</h1></Link>
           <Link to="/heimdall">Heimdall</Link>
           <Link to="/map">Live</Link>
         </header>
         <section>
-          {React.cloneElement(this.props.children, { channel: this.state.channel })|| 'Welcome to React Starterify'}
+          {(this.state.channel) ? React.cloneElement(this.props.children, { channel: this.state.channel }) : "Loading..." }
         </section>
       </div>
     )

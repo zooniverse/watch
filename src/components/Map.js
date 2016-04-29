@@ -1,30 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import Pusher from 'pusher-js';
-import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet';
+import L from 'leaflet';
+import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
 import { apiClient } from 'panoptes-client'
 
-export default class Map extends React.Component {
+export default class MapVisualization extends React.Component {
   constructor() {
     super();
     this.state = {
       coordinates: [50.5, 30.5],
       project: null,
-      zoom: 1,
+      zoom: 2,
     };
   }
 
   processPanoptesClassification (classification) {
     console.log('classification', classification)
     apiClient.type('projects').get(classification.project_id.toString())
-      .then( (project) => {
+      .then((project) => {
         this.setState({
           coordinates: [classification.geo.latitude, classification.geo.longitude],
           project: project
         });
       })
-      .catch( () => {
-        console.log(this);
+      .catch(() => {
         // Staging server won't find production project ids
         this.setState({ coordinates: [classification.geo.latitude, classification.geo.longitude] });
       });
@@ -37,26 +37,27 @@ export default class Map extends React.Component {
 
   render() {
     let position = this.state.coordinates;
-    let marker;
+    let icon = L.Icon({ iconUrl: 'circle.svg' });
+    let popup;
     if (this.state.project !== null) {
-      return marker =
+      popup =
         <Popup>
           <span>{this.state.project.display_name}</span>
-        </Popup>
-    } else {
-      return null
+          <span>{this.state.coordinates[0]}, {this.state.coordinates[1]}</span>
+        </Popup>;
+      return popup
     };
 
     return (
-      <LeafletMap ref="map" className="map" center={position} zoom={this.state.zoom}>
+      <Map ref="map" className="map" center={[0, 0]} zoom={this.state.zoom}>
         <TileLayer
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url='http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+          attribution='&copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
         />
-        <Marker position={position}>
-          {marker}
-        </Marker>
-      </LeafletMap>
+        <CircleMarker className="circle-marker" center={position} radius={3}>
+          {popup}
+        </CircleMarker>
+      </Map>
     )
   }
 };
