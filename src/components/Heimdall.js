@@ -2,8 +2,6 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Pusher from 'pusher-js';
 import { apiClient } from 'panoptes-client';
-import Panoptes from 'panoptes-client';
-
 
 export default class Heimdall extends React.Component {
   constructor(props) {
@@ -16,10 +14,10 @@ export default class Heimdall extends React.Component {
       this.state.projects[classification.project_id].classifications_count += 1;
       this.forceUpdate();
     } else {
-      apiClient.type('projects').get(classification.project_id.toString()).then(function(project) {
+      apiClient.type('projects').get(classification.project_id.toString()).then((project) => {
         project.avatarSrc = 'https://placekitten.com/175/175';
         this.loadAvatar(project)
-        var projects = this.state.projects;
+        let projects = this.state.projects;
         projects[classification.project_id] = project;
         this.setState({ projects: projects });
       }.bind(this));
@@ -27,9 +25,9 @@ export default class Heimdall extends React.Component {
   }
 
   loadAvatar(project) {
-    project.get("avatar").then(function(avatar) {
+    project.get("avatar").then((avatar) => {
       project.avatarSrc = avatar.src;
-      var projects = this.state.projects;
+      let projects = this.state.projects;
       projects[project.id] = project;
       this.setState({projects: projects})
     }.bind(this));
@@ -41,7 +39,7 @@ export default class Heimdall extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="heimdall-container">
         <p>Listening to stream...</p>
         <ul id="project_list" className="rig columns-6">
           <ReactCSSTransitionGroup transitionName="twiddle" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
