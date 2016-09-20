@@ -1,30 +1,54 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import Pusher from 'pusher-js';
-import Panoptes from 'panoptes-client';
-import L from 'leaflet-realtime';
+import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
+import { apiClient } from 'panoptes-client'
 
-export default class Map extends React.Component {
+export default class MapVisualization extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      coordinates: [50.5, 30.5],
+      project: null,
+    };
+  }
+
+  processPanoptesClassification (classification) {
+    apiClient.type('projects').get(classification.project_id.toString())
+      .then((project) => {
+        // Eventually we'll show some cool info about projects
+        this.setState({
+          coordinates: [classification.geo.latitude, classification.geo.longitude],
+          project: project
+        });
+      })
+      .catch(() => {
+        // Staging server won't find production project ids
+        this.setState({ coordinates: [classification.geo.latitude, classification.geo.longitude] });
+      });
+
+  }
+
   componentDidMount() {
-    var pusher = new Pusher('79e8e05ea522377ba6db', {encrypted: true});
-    var channel = pusher.subscribe('panoptes')
-
-    var panoptes = new Panoptes({appID: '1'});
-
-    window.pusher = pusher;
-    window.panoptes = panoptes;
-
-    var map = L.map('map')
-
-    this.setState({pusher: pusher, panoptes: panoptes});
-
-
+    this.props.channel.bind('classification', this.processPanoptesClassification.bind(this));
   }
 
   render() {
+    let position = this.state.coordinates;
+
     return (
-      <div id="map">
-        here will be the map!
-      </div>
-    );
+      <Map ref="map" className="map" center={[0, 0]} zoom={2} zoomControl={false}>
+        <TileLayer
+          url='http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+          attribution='&copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        />
+        <CircleMarker className="circle-marker" center={position} radius={3}>
+          <Popup>
+            <span>{this.state.coordinates[0]}, {this.state.coordinates[1]}</span>
+          </Popup>
+        </CircleMarker>
+      </Map>
+    )
   }
 };
+
