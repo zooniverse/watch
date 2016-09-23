@@ -1,40 +1,45 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Pusher from 'pusher-js';
-import { apiClient } from 'panoptes-client';
+import apiClient from 'panoptes-client/lib/api-client';
 
 export default class Heimdall extends React.Component {
   constructor(props) {
     super(props);
     this.state = {projects: {}};
+
+    this.processPanoptesClassification = this.processPanoptesClassification.bind(this);
+    this.loadAvatar = this.loadAvatar.bind(this);
   }
 
   processPanoptesClassification(classification) {
     if (this.state.projects[classification.project_id]) {
-      this.state.projects[classification.project_id].classifications_count += 1;
-      this.forceUpdate();
+      let projects = this.state.projects;
+      projects[classification.project_id].classifications_count += 1;
+      this.setState({ projects });
     } else {
-      apiClient.type('projects').get(classification.project_id.toString()).then((project) => {
-        project.avatarSrc = 'https://placekitten.com/175/175';
-        this.loadAvatar(project)
-        let projects = this.state.projects;
-        projects[classification.project_id] = project;
-        this.setState({ projects: projects });
-      }.bind(this));
+      apiClient.type('projects').get(classification.project_id.toString())
+        .then((project) => {
+          project.avatarSrc = 'https://placekitten.com/175/175';
+          this.loadAvatar(project);
+          let projects = this.state.projects;
+          projects[classification.project_id] = project;
+          this.setState({ projects });
+        });
     }
   }
 
   loadAvatar(project) {
-    project.get("avatar").then((avatar) => {
+    project.get('avatar').then((avatar) => {
       project.avatarSrc = avatar.src;
       let projects = this.state.projects;
       projects[project.id] = project;
-      this.setState({projects: projects})
-    }.bind(this));
+      this.setState({ projects });
+    });
   }
 
   componentDidMount() {
-    this.props.channel.bind('classification', this.processPanoptesClassification.bind(this))
+    this.props.channel.bind('classification', this.processPanoptesClassification)
   }
 
   render() {
@@ -51,8 +56,8 @@ export default class Heimdall extends React.Component {
   }
 
   renderProject(projectId) {
-    var project = this.state.projects[projectId];
-    var key = project.id + "-" + project.classifications_count;
+    const project = this.state.projects[projectId];
+    const key = project.id + '-' + project.classifications_count;
     return (
       <li key={key}>
         <div id={project.id} className="project-box" title={project.display_name}>

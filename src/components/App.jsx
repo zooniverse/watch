@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link }  from 'react-router';
-import packageJSON from '../../package.json';
 
 export default class App extends React.Component {
   constructor() {
@@ -18,14 +17,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const version = packageJSON.version;
-
     return (
       <div>
         <header>
           <Link to="/"><h1>Zooniverse Status</h1></Link>
           <Link to="/heimdall">Heimdall</Link>
-          <Link to="/map">Live</Link>
+          <Link to="/map">Map</Link>
         </header>
         <section>
           {(this.state.channel) ? React.cloneElement(this.props.children, { channel: this.state.channel }) : "Loading..." }

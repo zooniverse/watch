@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import Pusher from 'pusher-js';
 import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
-import { apiClient } from 'panoptes-client'
+import apiClient from 'panoptes-client/lib/api-client'
 
 export default class MapVisualization extends React.Component {
   constructor() {
@@ -11,9 +11,11 @@ export default class MapVisualization extends React.Component {
       coordinates: [50.5, 30.5],
       project: null,
     };
+
+    this.processPanoptesClassification = this.processPanoptesClassification.bind(this);
   }
 
-  processPanoptesClassification (classification) {
+  processPanoptesClassification(classification) {
     apiClient.type('projects').get(classification.project_id.toString())
       .then((project) => {
         // Eventually we'll show some cool info about projects
@@ -30,11 +32,11 @@ export default class MapVisualization extends React.Component {
   }
 
   componentDidMount() {
-    this.props.channel.bind('classification', this.processPanoptesClassification.bind(this));
+    this.props.channel.bind('classification', this.processPanoptesClassification);
   }
 
   render() {
-    let position = this.state.coordinates;
+    const position = this.state.coordinates;
 
     return (
       <Map ref="map" className="map" center={[0, 0]} zoom={2} zoomControl={false}>
