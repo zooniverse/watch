@@ -1,11 +1,8 @@
-[![Build Status](https://travis-ci.org/zooniverse/watch.svg?branch=master)](https://travis-ci.org/zooniverse/watch)
-[![bitHound Score](https://www.bithound.io/github/zooniverse/watch/badges/score.svg)](https://www.bithound.io/github/zooniverse/watch/master)
-[![Dependency status](https://david-dm.org/zooniverse/watch/status.svg)](https://david-dm.org/zooniverse/watch "Dependency status")
-[![Dev dependency status](https://david-dm.org/zooniverse/watch/dev-status.svg)](https://david-dm.org/zooniverse/watch#info=devDependencies "Dev dependency status")
+[![bitHound Score](https://www.bithound.io/github/Granze/react-starterify/badges/score.svg)](https://www.bithound.io/github/zooniverse/zoo-react-starterify/master)
 
-# Zooniverse Watch
+# Zooniverse Reduxify
 
-On the older Ouroboros-based infrastructure, there were two applications providing dashboards onto the stream of classifications that the Zooniverse sees across all our projects. This repo, Watch, is designed to replace both of these, adding our newer backend Panoptes in the mix.
+A minimal Redux application starter kit, based on [Zooniverse React Starterify](https://github.com/zooniverse/zoo-react-starterify).
 
 ## Usage
 
@@ -15,16 +12,32 @@ __Install the dependencies:__
 
 __Test:__
 
-`npm test`
+```npm run test```
 
 __Development mode with livereload:__
 
-`npm start`
+```npm run start```
 
-__When you are done, create a production ready version of the JS bundle:__
+__When you are done, create a production-ready version of the JS bundle:__
 
-`npm build`
+```npm run build```
+
+## Credits
+
+Thanks to [Granze](https://github.com/Granze) for the original [React Starterify](https://github.com/Granze/react-starterify), which is used under the [MIT License](http://opensource.org/licenses/MIT).
 
 ## License
 
-[MIT License](http://opensource.org/licenses/MIT)
+Copyright 2015 Zooniverse
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

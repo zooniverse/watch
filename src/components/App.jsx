@@ -1,33 +1,28 @@
 import React from 'react';
-import { Link }  from 'react-router';
+import PropTypes from 'prop-types';
+import { Link, Route, Switch } from 'react-router-dom';
+import { ZooniverseLogo } from 'zooniverse-react-components';
 
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      channel: null
-    };
-  }
+import AuthContainer from '../containers/AuthContainer';
+import AboutLayout from './about';
+import Home from './Home';
 
-  componentDidMount() {
-    const pusher = new Pusher('79e8e05ea522377ba6db', {encrypted: true});
-    const channel = pusher.subscribe('panoptes')
+export default function App() {
+  return (
+    <div>
+      <header className="site-header">
+        <Link to="/" className="link"><h1 className="title">Zooniverse Starter Project</h1></Link>
+        <Link to="/about" className="link">About</Link>
+        <AuthContainer />
+        <ZooniverseLogo />
+      </header>
+      <section className="content-section">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/about" component={AboutLayout} />
+        </Switch>
+      </section>
+    </div>
+  );
+}
 
-    this.setState({ channel: channel })
-  }
-
-  render() {
-    return (
-      <div>
-        <header>
-          <Link to="/"><h1>Zooniverse Status</h1></Link>
-          <Link to="/heimdall">Heimdall</Link>
-          <Link to="/map">Map</Link>
-        </header>
-        <section>
-          {(this.state.channel) ? React.cloneElement(this.props.children, { channel: this.state.channel }) : "Loading..." }
-        </section>
-      </div>
-    )
-  }
-};

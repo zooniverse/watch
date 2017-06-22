@@ -1,26 +1,22 @@
-'use strict';
-
-import path from 'path';
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import nib from 'nib';
-
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const nib = require('nib');
 
 module.exports = {
-
   devtool: 'eval-source-map',
 
   entry: [
-    'eventsource-polyfill',
-    'babel-polyfill', // adds support for ES6 APIs, e.g. Object.assign, and Promises
+    'eventsource-polyfill', // necessary for hot reloading with IE
+    'react-hot-loader/patch',
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, 'src/Index.jsx'),
+    path.join(__dirname, 'src/index.jsx')
   ],
 
   output: {
-    path: path.join(__dirname, '/build/'),
+    path: path.join(__dirname, '/dist/'),
     filename: '[name].js',
-    publicPath: '/',
+    publicPath: '/'
   },
 
   plugins: [
@@ -28,58 +24,43 @@ module.exports = {
       template: 'src/index.tpl.html',
       inject: 'body',
       filename: 'index.html',
-      gtm: '',
+      gtm: ''
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"staging"',
-    }),
+      'process.env.NODE_ENV': JSON.stringify('staging')
+    })
   ],
 
   resolve: {
-    extensions: ['', '.js', '.jsx', '.styl'],
-    modulesDirectories: ['.', 'node_modules'],
+    extensions: ['.js', '.jsx', '.styl'],
+    modules: ['.', 'node_modules']
   },
 
   module: {
-    // preLoaders: [
-    //   {
-    //     test: /\.jsx?$/,
-    //     exclude: /node_modules/,
-    //     loader: 'eslint-loader',
-    //   },
-    // ],
-    loaders: [
-      {
-        test: /\.json$/,
-        loader: 'json',
-      },
-      {
-        test: /\.jsx?$/,
-        exclude: /(node_modules)/,
-        loader: 'babel',
-      },
-      {
-        test: /\.ico$/,
-        loader: 'file?name=[name].[ext]',
-      },
-      {
-        test: /\.(jpg|png|gif|otf|eot|svg|ttf|woff\d?)$/,
-        loader: 'file-loader',
-      },
-      {
-        test: /\.styl$/,
-        loader: 'style-loader!css-loader!stylus-loader',
-      },
-    ],
-  },
-
-  stylus: {
-    use: [
-      nib()
-    ],
-  },
-
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /(node_modules)/,
+      use: [
+        'babel-loader'
+        // 'eslint-loader' uncomment if you want to use eslint while compiling
+      ]
+    }, {
+      test: /\.(jpg|png|gif|otf|eot|svg|ttf|woff\d?)$/,
+      use: 'file-loader'
+    }, {
+      test: /\.styl$/,
+      use: [{
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        loader: 'stylus-loader',
+        options: {
+          use: [nib()]
+        }
+      }]
+    }]
+  }
 };

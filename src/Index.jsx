@@ -1,24 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, useRouterHistory } from 'react-router';
-import { createHashHistory } from 'history';
+import { Router, Route } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+import { Provider } from 'react-redux';
+import oauth from 'panoptes-client/lib/oauth';
 
 import App from './components/App';
-import Home from './components/Home';
-import Heimdall from './components/Heimdall';
-import Map from './components/Map';
+import config from './config';
+import configureStore from './store';
 
-import Styles from './styles/main.styl';
+import './styles/main.styl';
 
-const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
+const store = configureStore();
+const history = createHistory();
 
-ReactDOM.render(
-  <Router history={appHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Home} />
-      <Route path="/heimdall" component={Heimdall} />
-      <Route path="/map" component={Map} />
-    </Route>
-  </Router>
-  , document.getElementById('content')
-);
+oauth.init(config.panoptesAppId)
+  .then(() => {
+    ReactDOM.render((
+      <Provider store={store}>
+        <Router history={history}>
+          <Route path="/" component={App} />
+        </Router>
+      </Provider>),
+      document.getElementById('root'),
+    );
+  });
