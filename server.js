@@ -9,7 +9,7 @@ const config = require('./webpack.config');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
-const port = isProduction ? process.env.PORT : 3000;
+const port = isProduction ? process.env.PORT : 1234;
 const app = express();
 const indexHtml = path.join(__dirname, 'dist/index.html');
 
