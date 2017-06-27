@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import pusher from './pusher';
+import subscription from './pusher';
+import projects from './projects';
 
 export default combineReducers({
-  pusher
+  projects,
+  subscription
 });

@@ -1,48 +1,89 @@
-import apiClient from 'panoptes/lib/api-client';
+import apiClient from 'panoptes-client/lib/api-client';
 
-const SET_PROJECT = 'watch/projects/SET_PROJECT'
+// Constants: Action types
+const SET_PROJECT_FETCHING = 'watch/projects/SET_PROJECT_FETCHING';
+const SET_PROJECT_SUCCESS = 'watch/projects/SET_PROJECT_SUCCESS';
+const SET_PROJECT_ERROR = 'watch/projects/SET_PROJECT_ERROR';
 
-const initialState = {
-  projects: {}
+// Misc Constants
+export const PROJECT_STATUS = {
+  ERROR: 'error',
+  IDLE: 'idle',
+  FETCHING: 'fetching',
+  SUCCESS: 'success'
 };
 
-const projectsReducer = (state = initialState, action) => {
+// Reducer
+const initialState = {
+  data: null,
+  status: {
+    message: null,
+    type: PROJECT_STATUS.IDLE
+  }
+};
+
+export default function projectsReducer(state = initialState, action) {
   switch (action.type) {
-    case SET_PROJECT:
-      return {
-        projects: Object.assign({}, state.projects, { [action.project.id]: action.project })
-      };
+    case SET_PROJECT_FETCHING:
+      return (
+        Object.assign({}, state, {
+          status: {
+            message: null,
+            type: PROJECT_STATUS.FETCHING
+          }
+        })
+      );
+    case SET_PROJECT_SUCCESS:
+      return (
+        Object.assign({}, state, {
+          data: { [action.project.id]: action.project },
+          status: {
+            message: null,
+            type: PROJECT_STATUS.SUCCESS
+          }
+        })
+      );
+    case SET_PROJECT_ERROR:
+      return (
+        Object.assign({}, state, {
+          status: {
+            message: `${action.error.status}: ${action.error.message}`,
+            type: PROJECT_STATUS.ERROR
+          }
+        })
+      );
     default:
       return state;
   }
 }
 
-const fetchProject = (projectID) => {
+// Action Creators
+export function setProjectStatusFetching() {
+  return { type: SET_PROJECT_FETCHING };
+}
+
+export function setProject(project) {
+  return { type: SET_PROJECT_SUCCESS, project };
+}
+
+export function setProjectStatusError(error) {
+  return { type: SET_PROJECT_ERROR, error };
+}
+
+// Async functions
+export function fetchProject(projectID) {
   return (dispatch) => {
-    apiClient.type('projects').get(projectID, { include: ['avatar'] })
+    dispatch(setProjectStatusFetching());
+
+    return apiClient.type('projects').get(projectID, { cards: true })
       .then((project) => {
-        // Getting included avatar resource out of the apiClient cache.
-        // This is not actually making another request
-        apiClient.type('avatars').get(project.links.avatar.id)
-          .then((avatar) => {
-            project.avatar_src = avatar.src;
-          })
-        return project;
-      }).then((project) => {
         dispatch(setProject(project));
-    }).catch((e) => { console.error(e); })
-  }
-}
-
-const setProject = (project) => {
-  return (dispatch) => {
-    type: SET_PROJECT,
-    project
-  }
-}
-
-export default projectsReducer;
-
-export {
-  fetchProject
+      }).catch((error) => {
+      // In this app, we do not care if a project is not found
+        if (error.status !== 404) {
+          dispatch(setProjectStatusError(error));
+          console.error(error);
+        }
+      });
+  };
 }
